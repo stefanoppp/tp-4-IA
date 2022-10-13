@@ -24,8 +24,8 @@ def main():
             pesos_random.append(peso_random)
         n=Neurona_oculta(pesos_random)
         neuronas.append(n)
-    
+    neurona_final=Neurona_final()
     # comienza la iteracion
     for i in range(iteraciones):
-        print(i)
+        pass
 main()

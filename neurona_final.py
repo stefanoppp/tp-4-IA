@@ -1,14 +1,12 @@
 import math
 import numpy as np
 class Neurona_final:
-    def __init__(self,pesos,salida,entradas):
+    def __init__(self,pesos):
         self.pesos=pesos
-        self.entradas=entradas
-        self.salida=salida
         self.lr=0.5
     
-    def obtener_salida(self):
-        prod_escalar=np.dot(self.pesos,self.entradas)
+    def obtener_salida(self,entradas):
+        prod_escalar=np.dot(self.pesos,entradas)
         salida_real=self.sigmoidea(prod_escalar)
         return salida_real
     
