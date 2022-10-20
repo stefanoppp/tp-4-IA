@@ -33,112 +33,42 @@ def main():
     nf=Neurona_final(pesos_finales)
 
     # ------------------comienza la iteracion------------------
-    peso_1=[]
-    peso_2=[]
-    peso_3=[]
-    historial_pesos_finales=[]
-    historial_pesos_finales.append(pesos_finales)
-    for i in range(iteraciones):
-
-        for j in range(len(entradas)):
+    errores=[]
+    # obtenemos errores neurona final y red
+    for iteracion in range(iteraciones):
+        for i in range(len(entradas)):
             salidas_ocultas=[]
-            # ---------------------obtengo salidas de capa oculta---------------------
-            for k in range(len(neuronas)):
-                salida=neuronas[k].obtener_salida(entradas[j])
-                salidas_ocultas.append(salida)
-            
-            error_red=nf.obtener_error(salidas_ocultas,salidas[j])   
-            
-            # ------------------------obtengo los errores ocultos--------------------
-            errores_ocultos=[]
-            for l in range(len(neuronas)):
-                error_oculto=neuronas[l].obtener_error(nf.pesos[l],error_red,entradas[j])
-                errores_ocultos.append(error_oculto)
-           
-        #    --------------------------recalculamos pesos ocultos----------------------
-            for m in range(len(neuronas)):
-                neuronas[m].pesos=neuronas[m].calcular_nuevos_pesos(errores_ocultos[m],pesos_finales[m],entradas[j])
-            # --------------------------recalculamos pesos finales------------------------  
-            nf.pesos=nf.calcular_nuevos_pesos(error_red,salidas_ocultas)
-            historial_pesos_finales.append(nf.pesos)
-            # ---------------------------------Graficamos todo---------------------------
-            
             for neurona in neuronas:
-                pesos_1_neurona=[]
-                pesos_2_neurona=[]
-                pesos_3_neurona=[]
-                for p in range(len(neurona.pesos)):
-                    if p==0:
-                        pesos_1_neurona.append(neurona.pesos[p])
-                    if p==1:
-                        pesos_2_neurona.append(neurona.pesos[p])
-                    if p==2:
-                        pesos_3_neurona.append(neurona.pesos[p])
-                peso_1.append(pesos_1_neurona)
-                peso_2.append(pesos_2_neurona)
-                peso_3.append(pesos_3_neurona)
+                salida_oculta=neurona.obtener_salida(entradas[i])
+                salidas_ocultas.append(salida_oculta)
+            
+            salida_red=nf.obtener_salida(salidas_ocultas)
+            error_red=nf.obtener_error(salidas[i],salida_red)
+            errores.append(error_red)
+    # ---------------------obtenemos errores neuronas ocultas--------------
+            errores_ocultos=[]        
+            for j in range(len(neuronas)):
+                error_oculto=neuronas[j].obtener_error(nf.pesos[j],error_red,salidas_ocultas[j])
+                errores_ocultos.append(error_oculto)
+                
+    # ---------------------------recalculamos pesos ocultos--------------
+            for j in range(len(neuronas)):
+                neuronas[j].calcular_nuevos_pesos(entradas[i],errores_ocultos[j])        
+
+    # -----------------------recalculamos pesos finales-------------------
+            nf.calcular_nuevos_pesos(error_red,salidas_ocultas)
     
     array=[]
-    # -----------------------------------PESOS 1-----------------------------
-    for i in range(len(neuronas)):
+    for i in range(len(entradas)):
         array.append([])
     
-    h=0
-    
-    for j in range(len(peso_1)):
-        array[h].append(peso_1[j])
-        h+=1
-        if h==len(neuronas):
-            h=0
-    
+    j=0
+    for i in range(len(errores)):
+        array[j].append(errores[i])
+        j+=1
+        if j==5:
+            j=0
     for element in array:
         plt.plot(element)
-    
-# --------------------------------------PESOS 2----------------------------
-    array=[]
-    # graficar pesos ocultos
-    for i in range(len(neuronas)):
-        array.append([])
-    
-    h=0
-    
-    for j in range(len(peso_2)):
-        array[h].append(peso_2[j])
-        h+=1
-        if h==len(neuronas):
-            h=0
-    
-    for element in array:
-        plt.plot(element)
-        
-# ---------------------------------------PESOS 3---------------------------
-    array=[]
-    # graficar pesos ocultos
-    for i in range(len(neuronas)):
-        array.append([])
-    
-    h=0
-    
-    for j in range(len(peso_3)):
-        array[h].append(peso_3[j])
-        h+=1
-        if h==len(neuronas):
-            h=0
-    
-    for element in array:
-        plt.plot(element)
-    # ---------------------------------- PESOS FINALES -------------------
-    array=[]
-    for i in range(len(neuronas)):
-        array.append([])
-    
-    h=0
-    for j in range(len(neuronas)):
-        array[h].append(pesos_finales[j])
-        h+=1
-        if h==len(neuronas):
-            h=0
-    for element in array:
-        plt.plot(element)    
-    plt.show()        
+    plt.show()
 main()  

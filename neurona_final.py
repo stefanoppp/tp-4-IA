@@ -3,16 +3,15 @@ import numpy as np
 class Neurona_final:
     def __init__(self,pesos):
         self.pesos=pesos
-        self.lr=0.6
+        self.lr=0.4
     
     def obtener_salida(self,entradas):
         prod_escalar=np.dot(self.pesos,entradas)
         salida_real=self.sigmoidea(prod_escalar)
         return salida_real
     
-    def obtener_error(self,entradas,salida):
-        salida_obtenida=self.obtener_salida(entradas)
-        error=salida_obtenida*(1-salida_obtenida)*(salida-salida_obtenida)
+    def obtener_error(self,salida_ideal,salida_obtenida):
+        error=salida_obtenida*(1-salida_obtenida)*(salida_ideal-salida_obtenida)
         return error
         
     def calcular_nuevos_pesos(self,error_red,entradas):
