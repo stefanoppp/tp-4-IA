@@ -24,7 +24,7 @@ def main():
             pesos_neuronales.append(peso_random)
         n=Neurona_oculta(pesos_neuronales)
         neuronas.append(n)
-    
+        
     # generamos neurona final con 1 peso por cada neurona generada
     pesos_finales=[]
     for j in range(len(neuronas)):
@@ -57,6 +57,13 @@ def main():
 
     # -----------------------recalculamos pesos finales-------------------
             nf.calcular_nuevos_pesos(error_red,salidas_ocultas)
+    
+    # Mostramos pesos finales
+    print("Pesos ocultos actualizados: ")
+    for neurona in neuronas:
+        print(neurona.pesos)
+    print("Pesos finales actualizados: ")
+    print(nf.pesos)
     
     array=[]
     for i in range(len(entradas)):
